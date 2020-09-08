@@ -1,5 +1,5 @@
 # interfax-client
-Python client to get started with Spark-Interfax SOAP API (https://www.spark-interfax.ru/integration)
+Python client to get started quickly with Spark-Interfax SOAP API (https://www.spark-interfax.ru/integration)
 
 ### Notes
 
