@@ -13,8 +13,7 @@ okfs = client.service.GetClassifier("okfs")
 a = client.service.GetCompanyShortReport(210).xmlData
 
 # Если хочется задать ИНН, а не СПАРК-ID, то надо в каком-то другом месте
-# поставить, типа ...ShortReport("", "", "INN") что ли, там у него чёткий порядок,
-# и он умеет брать ИНН и ОГРН.
+# поставить, например ...ShortReport("", "", "INN") и он умеет брать ИНН и ОГРН.
 # a = client.service.GetCompanyAccountingReport(210, "", "", "2018-12-31").xmlData # бухгалтерская отчётность РосНефти за нужную дату
 
 # Дальше мы этот xml с помощью схемы переводим в питоновский словарь,
