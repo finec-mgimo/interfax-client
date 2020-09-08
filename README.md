@@ -3,8 +3,8 @@ Python client to get started with Interfax Spark SOAP API (https://www.spark-int
 
 ### Notes
 
-- Original intent for API is integration with other client software (like 1C), not an end-user
-- We still can make use of API to cache queries in local files or a database - for recycling
+- Original intent for API is integration with other client software (like 1C), not an end-user functionality (that is why it is SOAP/XML probably)
+- We still can make use of API to cache queries in local files or a database - for recycling the queries and complex constructs of the data
 - We are grateful to advice and bits of code shared by New Economic School / CEFIR who are early adopters of Interfax API for academic research
 
 ### How to use
