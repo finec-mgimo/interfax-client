@@ -9,19 +9,21 @@ Python client to get started quickly with Spark-Interfax SOAP API (https://www.s
 
 ### How to use
 
-1. You need API login and password to be able to use Spark-Interfax, save them in `.env` file in root of project folder:
+1. Clone this repo to your computer.
+
+2. You need API login and password to be able to use Spark-Interfax, save them in `.env` file in project folder:
 
 ```
 INTERFAX_LOGIN=abc
 INTERFAX_PASSWORD=zzz
 ```
 
-`.env` is listed in `.gitignore`, that's why it does not get shared via Github. Keep `.gitignore` this way.
+`.env` is listed in `.gitignore`, that's why it does not get shared via Github. Keep `.gitignore` this way or you risk compromising the passwords.
 
-2. Install requirements:
+3. Install requirements:
 
 ```
 pip install requirements.txt
 ```
 
-3. Run `interfax.py` for simple example.
+4. Run [`interfax.py`](interfax.py) for simple example.
