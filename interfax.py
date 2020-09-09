@@ -40,6 +40,14 @@ get_short_report = create_getter("GetCompanyShortReport",
 # - list available companies
    
 class Reporter:
+    """Класс Reporter позволяет воспользоваться методами API Spark-Interfax.
+       На входе нужно предоставить свой логин и пароль.
+       Названия методов соотвествуют документации http://sparkgatetest.interfax.ru/iFaxWebService/.
+       В академической версии API доступна ограниченная часть методов 
+       (см. https://github.com/finec-mgimo/interfax-client/issues/2)
+    """
+
+
     wdsl_url = ENDPOINT    
     """
     Класс для логина и получения данных:
