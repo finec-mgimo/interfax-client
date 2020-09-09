@@ -7,10 +7,8 @@ from zeep import Client  # type: ignore
 from settings import ENDPOINT, locate_schema_file
 
 @contextmanager
-def get_client(
-    login: Optional[str], password: Optional[str], wdsl_url: str = ENDPOINT
-) -> Client:
-    """Клиент WDSL для использования в конструкции with"""
+def get_client(login, password, wdsl_url = ENDPOINT) -> Client:
+    """Клиент для использования в конструкции with"""
     client = Client(wdsl_url)
     client.service.Authmethod(login, password)
     try:
