@@ -4,15 +4,13 @@ from typing import Optional
 import xmlschema  # type: ignore
 from zeep import Client  # type: ignore
 
-from settings import ENDPOINT, login, password, locate_schema_file
-
+from settings import ENDPOINT, locate_schema_file
 
 @contextmanager
 def get_client(
     login: Optional[str], password: Optional[str], wdsl_url: str = ENDPOINT
 ) -> Client:
-    """Клиент для использования в конструкции with"""
-    # инициализируем и авторизуемся
+    """Клиент WDSL для использования в конструкции with"""
     client = Client(wdsl_url)
     client.service.Authmethod(login, password)
     try:
@@ -27,78 +25,38 @@ def get_schema(filename: str) -> xmlschema.XMLSchema10:
     return xmlschema.XMLSchema(locate_schema_file(filename))
 
 
-def get_short_report(client, *arg, **kwarg) -> dict:
-    xml = client.service.GetCompanyShortReport(*arg, **kwarg).xmlData
-    return get_schema("ShortReport.xsd").to_dict(xml)["Data"]["Report"][0]
+def create_getter(method_name, schema_filename, finalise_with):
+    def getter(client, *arg, **kwarg):
+       xml = client.service[method_name](*arg, **kwarg).xmlData
+       data = get_schema(schema_filename).to_dict(xml)
+       return finalise_with(data)
+    return getter
 
+get_short_report = create_getter("GetCompanyShortReport", 
+                                 "ShortReport.xsd", 
+                                 lambda x: x["Data"]["Report"][0])
 
 # TODO:
-# - match schemas to methods
-# - generalise get_short_report()
 # - list available companies
-
-
-def get_schema_filename(method_name: str) -> Optional[str]:
-    return dict(GetCompanyShortReport="ShortReport.xsd").get(method_name)
-
-
+   
 class Reporter:
-    def __init__(self, client):
-        self.client = client
+    wdsl_url = ENDPOINT    
+    """
+    Класс для логина и получения данных:
+       - иницализируется парой логин-пароль
+       - одноименные методы с SOAP API Spark-Interfax
+    """
+    def __init__(self, login: Optional[str], password: Optional[str]):
+        self.client = Client(self.wdsl_url)
+        self.enter = lambda: self.client.service.Authmethod(login, password) 
+    
+    def  __enter__(self):
+        self.enter()
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_traceback): 
+        self.client.service.End()
 
     def GetCompanyShortReport(self, *arg, **kwarg):
         return get_short_report(self.client, *arg, **kwarg)
-
-
-with get_client(login, password) as client:
-    z = get_short_report(client, 210)
-    assert z["ShortNameEn"] == "Rosneft Oil Company"
-    w = Reporter(client).GetCompanyShortReport(210)
-    assert z == w
-
-with get_client(login, password) as client:
-    # xml-ответ по схеме СПАРКа про компанию с таким Spark ID
-    # (например, 210 для Роснефти или 158, кажется, для Газпрома)
-    a = client.service.GetCompanyShortReport(210).xmlData
-
-    # Если хочется задать ИНН или ОГРН, а не СПАРК-ID, то можно указать по ключевому слову
-    # Еще пример с пустыми позиционными аргументами:
-    # client.service.GetCompanyAccountingReport(210, "", "", "2018-12-31").xmlData # бухгалтерская отчётность РосНефти за нужную дату
-    # по идее a и b отличаются только timestamp
-    b = client.service.GetCompanyShortReport(inn="7706107510").xmlData
-
-    # с помощью схемы мы переводим XML в питоновский словарь, а его уже в JSON и в Mongo
-    Schema = xmlschema.XMLSchema(locate_schema_file("ShortReport.xsd"))
-    data = Schema.to_dict(a)
-
-# Несколько проверок
-assert [x for x in data["Data"]["Report"][0].keys()] == [
-    "@ActualDate",
-    "SparkID",
-    "CompanyType",
-    "Status",
-    "EGRPOIncluded",
-    "IsActing",
-    "DateFirstReg",
-    "ShortNameRus",
-    "ShortNameEn",
-    "FullNameRus",
-    "INN",
-    "KPP",
-    "OGRN",
-    "OKPO",
-    "FCSMCode",
-    "OKATO",
-    "OKTMO",
-    "OKOPF",
-    "OKVED2List",
-    "LeaderList",
-    "LegalAddresses",
-    "PhoneList",
-    "IndexOfDueDiligence",
-    "AccessibleFinData",
-    "CompanyWithSameInfo",
-    "CompanyLiquidatedWithSameInfo",
-]
-
-assert data["Data"]["Report"][0]["INN"] == "7706107510"
+  

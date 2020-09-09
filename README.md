@@ -26,4 +26,17 @@ INTERFAX_PASSWORD=zzz
 pip install requirements.txt
 ```
 
-4. Run [`interfax.py`](interfax.py) for simple example.
+4. Run [`example.py`](example.py) for simple example:
+
+```python
+from settings import login, password
+from interfax import Reporter
+
+# Класс Reporter позволяет воспользоваться методами API Spark-Interfax 
+# На входе нужно предоставить свой логин и пароль
+with Reporter(login, password) as reporter: 
+    a = reporter.GetCompanyShortReport(sparkId=210)
+    
+assert a["INN"] == "7706107510"
+assert a["ShortNameEn"] == "Rosneft Oil Company"
+```
