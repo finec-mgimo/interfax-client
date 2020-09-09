@@ -6,7 +6,7 @@ from settings import login, password, wdsl_url
 client = Client(wdsl_url)
 client.service.Authmethod(login, password)
 
-# ЕП: вопрос 0 чем распаковывать внутренности, если там архив?
+# ЕП: вопрос b чем распаковывать внутренности, если okfs архив?
 okfs = client.service.GetClassifier("okfs")
 
 # xml-ответ по схеме СПАРКа про компанию с таким Spark ID
@@ -16,13 +16,12 @@ a = client.service.GetCompanyShortReport(210).xmlData
 # Если хочется задать ИНН или ОГРН, а не СПАРК-ID, то можно указать по ключевому слову
 b = client.service.GetCompanyShortReport(inn="7706107510").xmlData
 
-# по идее a и и отличаются только timestamp
+# по идее a и b отличаются только timestamp
 
 # Еще пример с пустыми позиционными аргументами:
 # client.service.GetCompanyAccountingReport(210, "", "", "2018-12-31").xmlData # бухгалтерская отчётность РосНефти за нужную дату
 
-# Дальше мы этот xml с помощью схемы переводим в питоновский словарь,
-# а тот уже в JSON и в Mongo.
+# с помощью схемы мы переводим XML в питоновский словарь, а его уже в JSON и в Mongo
 Schema = xmlschema.XMLSchema("ShortReport.xsd")
 data = Schema.to_dict(a)
 
