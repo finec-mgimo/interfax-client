@@ -1,4 +1,4 @@
-import xmlschema
+import xmlschema  # type: ignore
 from settings import login, password
 from interfax import Reporter, get_client, get_short_report, locate_schema_file
 
