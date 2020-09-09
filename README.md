@@ -18,7 +18,7 @@ INTERFAX_LOGIN=abc
 INTERFAX_PASSWORD=zzz
 ```
 
-`.env` is listed in `.gitignore`, that's why it does not get shared via Github. Keep `.gitignore` this way or you risk compromising the passwords.
+`.env` is listed in `.gitignore`, to prevent sharing in Github. Keep `.gitignore` this way or you risk compromising the passwords.
 
 3. Install requirements:
 
