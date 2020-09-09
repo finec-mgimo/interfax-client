@@ -3,7 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=Path(".") / ".env")
+load_dotenv(dotenv_path=Path(".") / "interfax.env")
 login = os.getenv("INTERFAX_LOGIN")
 password = os.getenv("INTERFAX_PASSWORD")
 

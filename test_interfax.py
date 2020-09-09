@@ -1,6 +1,6 @@
 import xmlschema
 from settings import login, password
-from interfax import Reporter, get_client
+from interfax import Reporter, get_client, get_short_report, locate_schema_file
 
 with get_client(login, password) as client:
     z = get_short_report(client, 210)
