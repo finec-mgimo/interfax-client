@@ -9,5 +9,6 @@ password = os.getenv("INTERFAX_PASSWORD")
 
 ENDPOINT = "http://sparkgatetest.interfax.ru/iFaxWebService/iFaxWebService.asmx?WSDL"
 
+
 def locate_schema_file(filename: str):
     return str(Path(".") / "schemas" / filename)

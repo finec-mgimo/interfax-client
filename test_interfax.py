@@ -5,7 +5,7 @@ from interfax import Reporter, get_client, get_short_report, locate_schema_file
 with get_client(login, password) as client:
     z = get_short_report(client, 210)
     assert z["ShortNameEn"] == "Rosneft Oil Company"
-    
+
 
 with get_client(login, password) as client:
     # xml-ответ по схеме СПАРКа про компанию с таким Spark ID
@@ -54,9 +54,7 @@ assert [x for x in data["Data"]["Report"][0].keys()] == [
 
 assert data["Data"]["Report"][0]["INN"] == "7706107510"
 
-  
-with Reporter(login, password) as reporter: 
+
+with Reporter(login, password) as reporter:
     w = reporter.GetCompanyShortReport(210)
-    assert z == w  
-    
-    
+    assert z == w
