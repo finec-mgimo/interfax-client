@@ -26,10 +26,6 @@ pip install requirements.txt
 from settings import login, password
 from interfax import Reporter
 
-# Класс Reporter позволяет воспользоваться методами API Spark-Interfax.
-# На входе нужно предоставить свой логин и пароль.
-# Названия методов соотвествуют документации http://sparkgatetest.interfax.ru/iFaxWebService/.
-# В академической версии доступна ограниченная часть базовых методов.
 with Reporter(login, password) as reporter: 
     a = reporter.GetCompanyShortReport(sparkId=210)
     
